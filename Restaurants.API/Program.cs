@@ -10,6 +10,7 @@ namespace Restaurants.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddInfrastructure(builder.Configuration); // Extentions
+            builder.Services.AddApplication();
 
             // Add services to the container.
 
