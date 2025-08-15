@@ -9,6 +9,7 @@ using Restaurants.Application.Restaurants.Commands.UpdateRestaurant;
 using Restaurants.Application.Restaurants.Dtos;
 using Restaurants.Application.Restaurants.Queries.GetAllRestaurant;
 using Restaurants.Application.Restaurants.Queries.RestaurantById;
+using Restaurants.Domin.Entities;
 
 namespace Restaurants.API.Controllers
 {
@@ -17,22 +18,22 @@ namespace Restaurants.API.Controllers
     public class RestaurantsController(IValidator<CreateRestaurantCommand> _validatorCreateRestaurantCommand, IValidator<UpdateRestaurantCommand> _validatorUpdateRestaurantCommand, IMediator _mediator) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] GetAllRestaurantsQuery query)
+        public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll()
         {
-            var resturenats = await _mediator.Send(query);
+            var resturenats = await _mediator.Send(new GetAllRestaurantsQuery());
             return Ok(resturenats);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        public async Task<ActionResult<Restaurant>> GetById([FromRoute] int id)
         {
             var restaurant = await _mediator.Send(new GetRestaurantByIdQuery(id));
-            if (restaurant == null)
-                return NotFound();
             return Ok(restaurant);
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] CreateRestaurantCommand createRestaurantCommand)
         {
             var result = await _validatorCreateRestaurantCommand.ValidateAsync(createRestaurantCommand);
@@ -46,27 +47,28 @@ namespace Restaurants.API.Controllers
 
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var result = await _mediator.Send(new DeleteRestaurantCommand(id));
-            if(result)
+             await _mediator.Send(new DeleteRestaurantCommand(id));           
             return NoContent();
-            return NotFound();
+        
         }
 
 
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id,UpdateRestaurantCommand command)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update([FromRoute] int id,UpdateRestaurantCommand command)
         {
             var resultOfValidation = await _validatorUpdateRestaurantCommand.ValidateAsync(command);
             if (resultOfValidation.IsValid)
             {
                 command.Id = id;
-                var result = await _mediator.Send(command);
-                if (result)
-                    return NoContent();
-                return NotFound();
+               await _mediator.Send(command);
+               return NoContent();               
             }
             return BadRequest(resultOfValidation.Errors);
         }
