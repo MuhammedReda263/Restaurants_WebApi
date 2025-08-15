@@ -19,7 +19,8 @@ namespace Restaurants.Infrastructure.Extensions
         {
             var connectionString = configuration.GetConnectionString("Default");
             services.AddDbContext<RestaurantsDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
+            //EnableSensitiveDataLogging => It's for allowed display senstive data in logging files in queries of EF like Id
 
             services.AddScoped<IRestaurantSeeder, RestaurantSeeder>();
 
