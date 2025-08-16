@@ -23,8 +23,8 @@ namespace Restaurants.Infrastructure.Extensions
             //EnableSensitiveDataLogging => It's for allowed display senstive data in logging files in queries of EF like Id
 
             services.AddScoped<IRestaurantSeeder, RestaurantSeeder>();
-
             services.AddScoped<IRestaurantsRepository,RestaurantsRepository>();
+            services.AddScoped<IDishsRepository, DishsRepository>();
         }
-        }
+    }
 }
