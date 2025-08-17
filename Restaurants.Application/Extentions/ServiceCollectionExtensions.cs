@@ -1,7 +1,7 @@
 ﻿
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using Restaurants.Application.Restaurants;
+using Restaurants.Application.Users;
 
 namespace Restaurants.Infrastructure.Extensions
 {
@@ -11,10 +11,10 @@ namespace Restaurants.Infrastructure.Extensions
         {
             var applicationAssembly = typeof(ServiceCollectionExtensions).Assembly;
             services.AddAutoMapper(applicationAssembly);
-            services.AddValidatorsFromAssembly(applicationAssembly);          
+            services.AddValidatorsFromAssembly(applicationAssembly);
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
+            services.AddScoped<IUserContext, UserContext> ();
 
-
-        }
+        } 
     }
 }

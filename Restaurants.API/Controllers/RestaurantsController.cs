@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Restaurants.Application.Restaurants;
@@ -18,6 +19,7 @@ namespace Restaurants.API.Controllers
     public class RestaurantsController(IValidator<CreateRestaurantCommand> _validatorCreateRestaurantCommand, IValidator<UpdateRestaurantCommand> _validatorUpdateRestaurantCommand, IMediator _mediator) : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll()
         {
             var resturenats = await _mediator.Send(new GetAllRestaurantsQuery());

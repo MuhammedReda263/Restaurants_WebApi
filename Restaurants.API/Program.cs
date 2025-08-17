@@ -1,9 +1,11 @@
+using Microsoft.OpenApi.Models;
+using Restaurants.API.Extentions;
 using Restaurants.API.Middlewares;
+using Restaurants.Domin.Entities;
 using Restaurants.Infrastructure.Extensions;
 using Restaurants.Infrastructure.Seeders;
 using Serilog;
 using Serilog.Events;
-
 namespace Restaurants.API
 {
     public class Program
@@ -11,22 +13,12 @@ namespace Restaurants.API
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddScoped<ErrorHandlingMiddleware>();
-            builder.Services.AddScoped<RequestTimeLoggingMiddleware>();
+            builder.AddPresentation();
             builder.Services.AddInfrastructure(builder.Configuration); // Extentions
             builder.Services.AddApplication();
+            builder.Services.AddHttpContextAccessor(); // For IHttpContextAccessor
 
             // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-
-            builder.Host.UseSerilog((context, configuration) =>
-                 configuration.ReadFrom.Configuration(context.Configuration)
-            );
 
             var app = builder.Build();
 
@@ -45,6 +37,11 @@ namespace Restaurants.API
             // Configure the HTTP request pipeline.
             app.UseHsts();
             app.UseHttpsRedirection();
+
+            
+            app.MapGroup("api/identity")
+                .WithTags("Identity") // to map identity controler togather
+                .MapIdentityApi<User>(); // To appear in swagger
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
