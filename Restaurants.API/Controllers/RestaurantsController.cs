@@ -18,14 +18,16 @@ namespace Restaurants.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RestaurantsController(IValidator<CreateRestaurantCommand> _validatorCreateRestaurantCommand, IValidator<UpdateRestaurantCommand> _validatorUpdateRestaurantCommand, IMediator _mediator) : ControllerBase
     {
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
+        
         // [Authorize(Policy = PolicyNames.AtLeast20)]
-        public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll([FromQuery] GetAllRestaurantsQuery query)
         {
-            var resturenats = await _mediator.Send(new GetAllRestaurantsQuery());
+            var resturenats = await _mediator.Send(query);
             return Ok(resturenats);
         }
 

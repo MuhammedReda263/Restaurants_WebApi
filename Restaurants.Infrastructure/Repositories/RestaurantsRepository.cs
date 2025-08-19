@@ -6,7 +6,7 @@ using Restaurants.Infrastructure.Persistence;
 
 namespace Restaurants.Infrastructure.Repositories
 {
-    internal class RestaurantsRepository (RestaurantsDbContext _dbContext) : IRestaurantsRepository
+    internal class RestaurantsRepository(RestaurantsDbContext _dbContext) : IRestaurantsRepository
     {
         public async Task<int> CreateAsync(Restaurant restaurant)
         {
@@ -17,23 +17,29 @@ namespace Restaurants.Infrastructure.Repositories
 
         public async Task<IEnumerable<Restaurant>> GetAllAsync()
         {
-            return await _dbContext.Restaurants.Include(temp=>temp.Dishes).ToListAsync();
+            return await _dbContext.Restaurants.Include(temp => temp.Dishes).ToListAsync();
         }
 
         public async Task<Restaurant?> GetByIdAsync(int id)
         {
-           return await _dbContext.Restaurants.Include(temp=>temp.Dishes).FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Restaurants.Include(temp => temp.Dishes).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task DeleteAsync(Restaurant restaurant)
         {
             _dbContext.Remove(restaurant);
-             await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Restaurant>> GetAllMatchingAsync(string? searchPhrase)
+        {
+            var searchPhraseLower = searchPhrase?.ToLower();
+           return await _dbContext.Restaurants.Where(t => searchPhraseLower == null || t.Name.ToLower().Contains(searchPhraseLower) || t.Description.ToLower().Contains(searchPhraseLower)).ToListAsync();
         }
     }
 }
