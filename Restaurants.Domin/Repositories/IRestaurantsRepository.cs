@@ -13,7 +13,7 @@ namespace Restaurants.Domin.Repositories
         Task<Restaurant?> GetByIdAsync(int id);
         Task<int> CreateAsync(Restaurant restaurant);
         Task DeleteAsync(Restaurant restaurant);
-        Task<IEnumerable<Restaurant>> GetAllMatchingAsync(string? searchPhrase);
+        Task<(IEnumerable<Restaurant>, int)> GetAllMatchingAsync(string? searchPhrase, int PageNumber, int PageSize);
         Task SaveChangesAsync();
     }
 }
