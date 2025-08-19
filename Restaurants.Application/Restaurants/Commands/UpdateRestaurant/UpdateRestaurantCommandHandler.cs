@@ -2,8 +2,10 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Restaurants.Application.Restaurants.Commands.CreateRestaurant;
+using Restaurants.Domin.Constants;
 using Restaurants.Domin.Entities;
 using Restaurants.Domin.Exceptions;
+using Restaurants.Domin.Interfaces;
 using Restaurants.Domin.Repositories;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Restaurants.Application.Restaurants.Commands.UpdateRestaurant
 {
-    public class UpdateRestaurantCommandHandler(IRestaurantsRepository _restaurantsRepo, ILogger<CreateRestaurabtCommandHandler> _logger, IMapper _mapper) : IRequestHandler<UpdateRestaurantCommand>
+    public class UpdateRestaurantCommandHandler(IRestaurantsRepository _restaurantsRepo, ILogger<CreateRestaurabtCommandHandler> _logger, IMapper _mapper, IRestaurantAuthorizationService _restaurantAuthorizationService) : IRequestHandler<UpdateRestaurantCommand>
     {
         public async Task Handle(UpdateRestaurantCommand request, CancellationToken cancellationToken)
         {
@@ -24,6 +26,10 @@ namespace Restaurants.Application.Restaurants.Commands.UpdateRestaurant
             var resturant = await _restaurantsRepo.GetByIdAsync(request.Id);
             if (resturant == null)
                 throw new NotFoundException(nameof(Restaurant), request.Id.ToString());
+            if (!_restaurantAuthorizationService.Authorize(resturant, ResourceOperation.Update))
+            {
+                throw new ForbidException();
+            }
             _mapper.Map(request, resturant);
             await _restaurantsRepo.SaveChangesAsync();        
 

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Restaurants.Application.Dishs.Commands.CreateDish;
@@ -13,6 +14,7 @@ namespace Restaurants.API.Controllers
 {
     [Route("api/restaurants/{restaurantId}/[controller]")]
     [ApiController]
+    [Authorize]
     public class DishsController(IMediator _mediator, IValidator<CreateDishCommand> _validatorDishCommand) : ControllerBase
     { 
         [HttpPost]

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Http.HttpResults;
 using Restaurants.Domin.Exceptions;
 
 namespace Restaurants.API.Middlewares
@@ -15,7 +16,7 @@ namespace Restaurants.API.Middlewares
         {
             try
             {
-                  await next.Invoke(context);
+                await next.Invoke(context);
             }
             catch (NotFoundException notFound)
             {
@@ -24,6 +25,14 @@ namespace Restaurants.API.Middlewares
                 context.Response.ContentType = "text/plain";
                 await context.Response.WriteAsync(notFound.Message);
                 _logger.LogWarning(notFound.Message);
+            }
+            catch (ForbidException)
+            {
+                context.Response.Clear();
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync("Access forbidden");
+             
             }
             catch (Exception ex)
             {

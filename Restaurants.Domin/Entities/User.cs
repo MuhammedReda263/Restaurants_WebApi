@@ -11,5 +11,6 @@ namespace Restaurants.Domin.Entities
     {
         public DateOnly? DateOfBirth { get; set; }
         public string? Nationality { get; set; }
+        public List<Restaurant> restaurants { get; set; } = default!;
     }
 }
