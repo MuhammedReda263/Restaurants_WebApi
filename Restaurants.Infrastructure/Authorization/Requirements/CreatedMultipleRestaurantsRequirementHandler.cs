@@ -21,8 +21,11 @@ namespace Restaurants.Infrastructure.Authorization.Requirements
             {
                context.Succeed(requirement);
             }
-
-            context.Fail();
+            else
+            {
+                context.Fail();
+            }
+            
         }
     }
 }
