@@ -32,7 +32,7 @@ namespace Restaurants.Infrastructure.Authorization.Requirements.Tests
             };
             _restaurantsRepositoryMock.Setup(t => t.GetAllAsync()).ReturnsAsync(restaurants);
 
-            var requirement = new CreatedMultipleRestaurantsRequirement(2);
+            var requirement = new CreatedMultipleRestaurantsRequirement(1);
             var handler = new CreatedMultipleRestaurantsRequirementHandler(_restaurantsRepositoryMock.Object,
                 _userContextMock.Object);
 
