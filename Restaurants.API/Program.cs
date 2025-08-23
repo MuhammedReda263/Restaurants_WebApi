@@ -57,5 +57,8 @@ namespace Restaurants.API
 
             app.Run();
         }
-    }
+    } 
 }
+public partial class Program { }
+// It's aloow us to use program class outside prsentation layer 
+// we do it to can access the program in integration testing
