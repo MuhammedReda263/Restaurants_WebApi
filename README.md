@@ -64,7 +64,7 @@ The project demonstrates advanced software engineering practices including **CQR
 
 ## **Project Structure**
 
-```plaintext
+plaintext
 src/
 │── Restaurants.API            → The main API project (entry point)
 │── Restaurants.Application    → Application logic, CQRS, commands, queries, and validations
@@ -73,7 +73,17 @@ src/
 tests/
 │── Restaurants.API.Tests      → Unit and integration tests
 
-
 ## **How To Run**
 
-To run the project, set Restaurants.API as the startup project in Visual Studio and start the application.
+### 1.Clone the Repository
+git clone https://github.com/MuhammedReda263/Restaurants.git
+cd Restaurants
+
+### 2. Update Database Connection
+src/Restaurants.API/appsettings.json
+
+### 3. Apply Database Migrations
+dotnet ef database update --project src/Restaurants.Infrastructure --startup-project src/Restaurants.API
+
+### 5. Run the Application
+dotnet run --project src/Restaurants.API
