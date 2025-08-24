@@ -1,4 +1,4 @@
-# Restaurants API - Clean Architecture & Testing Playground
+## Restaurants API - Clean Architecture & Testing Playground
 
 This is a **.NET 8.0 Web API** project designed for **managing restaurants** while following the principles of **Clean Architecture**.  
 The project demonstrates advanced software engineering practices including **CQRS**, **MediatR**, **Identity & JWT Authentication**, **Logging**, **Testing**, and more.
