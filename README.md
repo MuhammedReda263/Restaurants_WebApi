@@ -64,7 +64,7 @@ The project demonstrates advanced software engineering practices including **CQR
 
 ## **Project Structure**
 
-plaintext
+...plaintext
 src/
 │── Restaurants.API            → The main API project (entry point)
 │── Restaurants.Application    → Application logic, CQRS, commands, queries, and validations
