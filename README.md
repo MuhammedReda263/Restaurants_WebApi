@@ -64,14 +64,12 @@ The project demonstrates advanced software engineering practices including **CQR
 
 ## **Project Structure**
 
-``plaintext
-src/
-│── Restaurants.API            → The main API project (entry point)
-│── Restaurants.Application    → Application logic, CQRS, commands, queries, and validations
-│── Restaurants.Domain        → Core domain models, entities, and business rules
-│── Restaurants.Infrastructure → Database, repositories, identity, logging, and other infrastructure code
-tests/
-│── Restaurants.API.Tests      → Unit and integration tests
+src/Restaurants.API: The main API project. This is the entry point of the application.
+src/Restaurants.Application: Contains the application logic. This layer is responsible for the application's behavior and policies.
+src/Restaurants.Domain: Contains enterprise logic and types. This is the core layer of the application.
+src/Restaurants.Infrastructure: Contains infrastructure-related code such as database and file system interactions. This layer supports the higher layers.
+tests/Restaurants.API.Tests: Contains unit tests for the API.
+
 
 ## **How To Run**
 
