@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Restaurants.Application.Users.Commands.AssignUserRole;
 using Restaurants.Application.Users.Commands.UnAssignUserRole;
 using Restaurants.Application.Users.Commands.UpdateUserDetails;
 using Restaurants.Domin.Constants;
+using Restaurants.Domin.Entities;
 
 namespace Restaurants.API.Controllers
 {
@@ -36,5 +38,6 @@ namespace Restaurants.API.Controllers
             await _mediator.Send(command);
             return NoContent();
         }
+
     }
 }
